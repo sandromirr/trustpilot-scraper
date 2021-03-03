@@ -1,1 +1,1 @@
-# trustpilot-scraper
+# TrustPilot-Scraper

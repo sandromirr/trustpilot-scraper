@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import csv
+
 class Review:
     def __init__(self,name,photo,location,rate,title,text):
         self.name = name
@@ -23,31 +24,30 @@ class ReviewScrape:
         for review in reviews:
             customer_name = review.find('div', {'class': 'consumer-information__name'}).text.strip()
             photo = 'NO photo'
-            print(review.find('a', {'class': 'consumer-information'}))
             if review.find('consumer-review-picture').has_attr('consumer-image-url'):
                     photo = review.find('consumer-review-picture')['consumer-image-url']
             location = 'No Location'
             if review.find('div', {'class': 'consumer-information__location'}):
                 location = review.find('div', {'class': 'consumer-information__location'}).span.text.strip()
             customer_rate = review.find('div', {'class': 'star-rating star-rating--medium'}).img['alt'].strip()
-            customer_title = 'NOT COMMENT TITLE'
+            customer_title = 'NO COMMENT TITLE'
             if review.find('a', {'class': 'link link--large link--dark'}):
                 customer_title = review.find('a', {'class': 'link link--large link--dark'}).text.strip()
-            customer_text = 'NOT COMMENT BODY'
+            customer_text = 'NO COMMENT BODY'
             if review.find('p', {'class': 'review-content__text'}):
                 customer_text = review.find('p', {'class': 'review-content__text'}).text.strip()
             customer_review = Review(customer_name, photo, location, customer_rate, customer_title, customer_text)
             page_reviews.append(customer_review)
-            #print(customer_review)
         return page_reviews
 
 def validate(str):
-    x = '.0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz '
+    x = '\/:.0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz '
     s = ''
     for i in str:
         if i in x:
             s += i
     return s
+
 
 class ReviewUtil:
     @staticmethod

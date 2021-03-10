@@ -1,11 +1,12 @@
 import requests
+import time
 from bs4 import BeautifulSoup
 
 from Company import Company
 from Review import ReviewScrape,ReviewUtil
 
 if __name__ == "__main__":
-    url = 'https://www.trustpilot.com/review/github.com'
+    url = 'https://www.trustpilot.com/review/www.dropbox.com'
     page = requests.get(url).text
 
     soap = BeautifulSoup(page,'html.parser')
@@ -25,6 +26,8 @@ if __name__ == "__main__":
     for page in range(1,pages+1):
         page_url = f'{url}?languages=all&page={page}'
         company.add_reviews(review_scrapper.scrape(page_url))
+        time.sleep(10)
+        print(f"page {page}")
 
     ReviewUtil.save(f'{company.company_name}.csv',company.reviews)
 
